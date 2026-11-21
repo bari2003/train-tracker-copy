@@ -19,5 +19,5 @@ COPY --from=build /app/target/*.jar app.jar
 # Tell Render both ports can receive traffic
 EXPOSE 8080 10000
 
-# Launch Spring Boot dynamically binding to Render's assigned port and all interfaces (0.0.0.0)
-ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT:-8080} -Dserver.address=0.0.0.0 -Djava.security.egd=file:/dev/./urandom -jar app.jar"]
+# Launch Spring Boot dynamically binding to Render's assigned port, all interfaces (0.0.0.0), and default h2 profile
+ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT:-8080} -Dserver.address=0.0.0.0 -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:-h2} -Djava.security.egd=file:/dev/./urandom -jar app.jar"]
