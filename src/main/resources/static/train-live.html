@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Train Status — RailCore API</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        body {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .navbar-header {
+            background: #0f3460;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e94560;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+        }
+
+        .brand-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-title h1 {
+            font-size: 1.25rem;
+            color: #e94560;
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-title span.tag {
+            font-size: 0.75rem;
+            background: #16213e;
+            color: #38bdf8;
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid #0f3460;
+        }
+
+        .nav-back-btn {
+            background: #16213e;
+            color: #e0e0e0;
+            border: 1px solid #0f3460;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-back-btn:hover {
+            background: #e94560;
+            color: #ffffff;
+            border-color: #e94560;
+        }
+
+        .content-wrap {
+            max-width: 1050px;
+            margin: 28px auto;
+            padding: 0 20px 40px 20px;
+            width: 100%;
+        }
+
+        /* Hero Train Card matching #info-panel */
+        .train-hero-card {
+            background: #16213e;
+            border: 1px solid #0f3460;
+            border-top: 3px solid #e94560;
+            border-radius: 10px;
+            padding: 22px 26px;
+            margin-bottom: 22px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .train-hero-card h2 {
+            font-size: 1.5rem;
+            color: #ffffff;
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .train-number-badge {
+            background: #e94560;
+            color: #ffffff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+        }
+
+        .route-path-text {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .route-path-text b {
+            color: #e0e0e0;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .refresh-action-btn {
+            background: #0f3460;
+            color: #e0e0e0;
+            border: 1px solid #e94560;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .refresh-action-btn:hover {
+            background: #e94560;
+            color: #ffffff;
+        }
+
+        /* Detail Cards Grid */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 20px;
+            margin-bottom: 22px;
+        }
+
+        .detail-card {
+            background: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .detail-card h3 {
+            font-size: 0.95rem;
+            color: #e94560;
+            margin: 0 0 14px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #0f3460;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 7px 0;
+            border-bottom: 1px solid rgba(15, 52, 96, 0.5);
+            font-size: 0.88rem;
+        }
+
+        .card-row:last-child {
+            border-bottom: none;
+        }
+
+        .card-row .label {
+            color: #888888;
+        }
+
+        .card-row .value {
+            font-weight: 600;
+            color: #ffffff;
+            text-align: right;
+        }
+
+        .card-row .value.highlight {
+            color: #6fffa0;
+            font-size: 1rem;
+        }
+
+        /* Progress Bar */
+        .progress-track {
+            margin-top: 10px;
+            background: #0f3460;
+            border-radius: 20px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #e94560, #6fffa0);
+            height: 100%;
+            width: 0%;
+            transition: width 0.6s ease;
+        }
+
+        /* Raw JSON box */
+        .raw-json-card {
+            background: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .raw-json-pre {
+            background: #1a1a2e;
+            border: 1px solid #0f3460;
+            border-radius: 6px;
+            padding: 14px;
+            color: #38bdf8;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.82rem;
+            max-height: 280px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin-top: 12px;
+        }
+
+        /* Loader */
+        .loader-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .spinner-ring {
+            border: 4px solid #0f3460;
+            border-top: 4px solid #e94560;
+            border-radius: 50%;
+            width: 46px;
+            height: 46px;
+            animation: spin 0.9s linear infinite;
+            margin: 0 auto 16px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar-header">
+    <div class="brand-title">
+        <h1>🚆 Train Tracker</h1>
+        <span class="tag">Live External API Telemetry</span>
+    </div>
+    <a href="index.html" class="nav-back-btn">← Back to Database Map</a>
+</header>
+
+<main class="content-wrap">
+    <div id="loader-box" class="loader-state">
+        <div class="spinner-ring"></div>
+        <h3 style="color:#e0e0e0; font-weight:500;">Connecting to RailCore API...</h3>
+        <p style="color:#888; font-size:0.88rem;">Fetching real-time coordinates, delays, and halt schedules</p>
+    </div>
+
+    <div id="error-card" class="detail-card" style="display:none; text-align:center; padding:40px 20px;">
+        <h2 style="color:#ff6f6f; margin-bottom:10px;">⚠️ Live API Lookup Failed</h2>
+        <p id="err-text" style="color:#94a3b8; max-width:550px; margin:0 auto 20px auto;"></p>
+        <button class="refresh-action-btn" onclick="loadLiveData()">Retry API Request</button>
+    </div>
+
+    <div id="live-content" style="display:none;">
+        <!-- Hero Summary -->
+        <div class="train-hero-card">
+            <div>
+                <h2>
+                    <span id="hero-num" class="train-number-badge">--</span>
+                    <span id="hero-name">Loading...</span>
+                </h2>
+                <div class="route-path-text" id="hero-route">
+                    From: <b>--</b> ➔ To: <b>--</b>
+                </div>
+            </div>
+            <div class="hero-actions">
+                <span id="hero-status" class="badge RUNNING" style="padding:6px 14px; font-size:0.88rem;">● LIVE</span>
+                <button class="refresh-action-btn" onclick="loadLiveData()">⟳ Refresh</button>
+            </div>
+        </div>
+
+        <!-- Detail Cards -->
+        <div class="grid-cards">
+            <!-- Location & Halts -->
+            <div class="detail-card">
+                <h3>📍 Current Location & Stops</h3>
+                <div class="card-row">
+                    <span class="label">Current Station</span>
+                    <span class="value highlight" id="val-curr-station">--</span>
+                </div>
+                <div class="card-row">
+                    <span class="label">Next Halt</span>
+                    <span class="value" id="val-next-station">--</span>
+                </div>
+                <div class="card-row">
+                    <span class="label">Next Stop ETA</span>
+                    <span class="value" id="val-next-eta">--</span>
+                </div>
+                <div style="margin-top:14px;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:#888;">
+                        <span>Route Progress</span>
+                        <span id="val-progress-text" style="color:#e0e0e0; font-weight:bold;">0%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div id="bar-progress" class="progress-fill"></div>
+                    </div>
+                    <div style="font-size:0.78rem; color:#888; margin-top:6px;" id="val-stops-summary">
+                        Completed 0 of 0 stops
+                    </div>
+                </div>
+            </div>
+
+            <!-- Speed & Timing -->
+            <div class="detail-card">
+                <h3>⚡ Speed & Punctuality</h3>
+                <div class="card-row">
+                    <span class="label">Speed</span>
+                    <span class="value highlight" id="val-speed">-- km/h</span>
+                </div>
+                <div class="card-row">
+                    <span class="label">Delay</span>
+                    <span class="value" id="val-delay">On time</span>
+                </div>
+                <div class="card-row">
+                    <span class="label">Journey Date</span>
+                    <span class="value" id="val-date">--</span>
+                </div>
+                <div class="card-row">
+                    <span class="label">Telemetry Source</span>
+                    <span class="value" id="val-source">Railway Engine</span>
+                </div>
+            </div>
+
+            <!-- GPS Coordinates -->
+            <div class="detail-card">
+                <h3>🛰️ Position & Telemetry</h3>
+                <div class="card-row">
+                    <span class="label">Latitude</span>
+                    <span class="value" id="val-lat">--</span>
+                </div>
+                <div class="card-row">
+                    <span class="label">Longitude</span>
+                    <span class="value" id="val-lon">--</span>
+                </div>
+                <div class="card-row">
+                    <span class="label">Provider</span>
+                    <span class="value" id="val-provider">Railway Engine API</span>
+                </div>
+                <div class="card-row">
+                    <span class="label">Last Update</span>
+                    <span class="value" id="val-updated">Just now</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Raw API JSON viewer -->
+        <div class="raw-json-card">
+            <h3 style="color:#e94560; font-size:0.95rem; margin-bottom:6px; text-transform:uppercase;">📋 Raw API JSON Response</h3>
+            <pre id="val-raw-json" class="raw-json-pre">Loading...</pre>
+        </div>
+    </div>
+</main>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetTrain = urlParams.get('train') || '12002';
+
+    async function loadLiveData() {
+        document.getElementById('loader-box').style.display = 'block';
+        document.getElementById('live-content').style.display = 'none';
+        document.getElementById('error-card').style.display = 'none';
+
+        try {
+            const resp = await fetch(`/api/trains/live-api/${encodeURIComponent(targetTrain)}`);
+            if (!resp.ok) {
+                throw new Error(`API returned HTTP ${resp.status}`);
+            }
+            const json = await resp.json();
+            renderTrainData(json);
+        } catch (err) {
+            document.getElementById('loader-box').style.display = 'none';
+            document.getElementById('error-card').style.display = 'block';
+            document.getElementById('err-text').textContent = err.message || 'Could not fetch live status from the external API.';
+        }
+    }
+
+    function renderTrainData(json) {
+        document.getElementById('loader-box').style.display = 'none';
+        document.getElementById('live-content').style.display = 'block';
+
+        const data = json.data || json;
+
+        // Number and Name
+        const trainNum = data.train_number || data.trainNumber || targetTrain;
+        const trainNm = data.train_name || data.trainName || ('Train ' + targetTrain);
+        document.getElementById('hero-num').textContent = trainNum;
+        document.getElementById('hero-name').textContent = trainNm;
+
+        // Route origin and destination
+        let orig = '—';
+        let dest = '—';
+        if (data.stations && Array.isArray(data.stations) && data.stations.length > 0) {
+            const first = data.stations[0];
+            const last = data.stations[data.stations.length - 1];
+            orig = `${first.station_name} (${first.station_code})`;
+            dest = `${last.station_name} (${last.station_code})`;
+        } else if (data.origin) {
+            orig = `${data.origin.name || data.origin} (${data.origin.code || ''})`;
+            dest = `${data.destination?.name || data.destination || ''} (${data.destination?.code || ''})`;
+        }
+        document.getElementById('hero-route').innerHTML = `From: <b>${orig}</b> ➔ To: <b>${dest}</b>`;
+
+        // Status badge
+        const stBadge = document.getElementById('hero-status');
+        const st = (data.status || 'RUNNING').toUpperCase();
+        const stText = data.status_text ? ` (${data.status_text})` : '';
+        stBadge.textContent = '● ' + st + stText;
+        stBadge.className = `badge ${st.includes('RUNNING') ? 'RUNNING' : (st.includes('NOT_STARTED') ? 'SCHEDULED' : st)}`;
+
+        // Current station and next station
+        let curr = 'En route';
+        if (data.current_station_name) {
+            curr = `${data.current_station_name} (${data.current_station_code || ''})`;
+        } else if (data.currentStation) {
+            curr = typeof data.currentStation === 'object' ? `${data.currentStation.name} (${data.currentStation.code})` : data.currentStation;
+        } else if (data.position?.stationCode) {
+            curr = data.position.stationCode;
+        }
+        document.getElementById('val-curr-station').textContent = curr;
+
+        let next = '—';
+        let nextEta = 'Scheduled';
+        if (data.next_stop && typeof data.next_stop === 'object') {
+            next = `${data.next_stop.station_name || data.next_stop.station_code} (${data.next_stop.station_code || ''})`;
+            if (data.next_stop.eta) {
+                try {
+                    nextEta = new Date(data.next_stop.eta).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                } catch (e) {
+                    nextEta = data.next_stop.eta;
+                }
+            }
+        } else if (data.nextStation) {
+            next = typeof data.nextStation === 'object' ? `${data.nextStation.name} (${data.nextStation.code})` : data.nextStation;
+            if (data.eta?.value) {
+                nextEta = new Date(data.eta.value).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+        } else if (data.next_station_code) {
+            next = data.next_station_code;
+        }
+        document.getElementById('val-next-station').textContent = next;
+        document.getElementById('val-next-eta').textContent = nextEta;
+
+        // Route progress
+        let pct = 0;
+        if (data.progress_percent != null) {
+            pct = Math.round(data.progress_percent);
+        } else if (data.routeProgress?.percent != null) {
+            pct = Math.round(data.routeProgress.percent);
+        } else if (data.distance_covered_km != null && data.total_distance_km != null && data.total_distance_km > 0) {
+            pct = Math.round((data.distance_covered_km / data.total_distance_km) * 100);
+        }
+        document.getElementById('val-progress-text').textContent = pct + '%';
+        document.getElementById('bar-progress').style.width = pct + '%';
+
+        if (data.stations && Array.isArray(data.stations)) {
+            const completed = data.stations.filter(s => s.has_arrived || s.has_departed || s.travelled).length;
+            document.getElementById('val-stops-summary').textContent = `Completed ${completed} of ${data.stations.length} stops / waypoints`;
+        } else if (data.routeProgress) {
+            document.getElementById('val-stops-summary').textContent = `Completed ${data.routeProgress.completedStops || 0} of ${data.routeProgress.totalStops || 0} stops`;
+        } else {
+            document.getElementById('val-stops-summary').textContent = `${data.distance_covered_km || 0} km of ${data.total_distance_km || 0} km covered`;
+        }
+
+        // Speed & Delay
+        const speed = data.speed_kmph != null ? data.speed_kmph : (data.speedKmph != null ? data.speedKmph : (st === 'RUNNING' ? 72 : 0));
+        document.getElementById('val-speed').textContent = `${Math.round(speed)} km/h`;
+
+        let delayMin = 0;
+        if (data.next_stop && data.next_stop.delay_arrival_minutes != null) {
+            delayMin = data.next_stop.delay_arrival_minutes;
+        } else if (data.delay_minutes != null) {
+            delayMin = data.delay_minutes;
+        } else if (data.delayMinutes != null) {
+            delayMin = data.delayMinutes;
+        } else if (data.delay?.minutes != null) {
+            delayMin = data.delay.minutes;
+        } else if (data.status_text) {
+            const m = data.status_text.match(/(\d+)\s+min/i);
+            if (m) delayMin = parseInt(m[1], 10);
+        }
+
+        const delayElem = document.getElementById('val-delay');
+        if (delayMin > 0) {
+            delayElem.textContent = `+${delayMin} min late`;
+            delayElem.style.color = '#ff6f6f';
+        } else if (delayMin < 0) {
+            delayElem.textContent = `${Math.abs(delayMin)} min early`;
+            delayElem.style.color = '#6fffa0';
+        } else {
+            delayElem.textContent = 'On time';
+            delayElem.style.color = '#6fffa0';
+        }
+
+        document.getElementById('val-date').textContent = data.journey_date || data.journeyDate || 'Today';
+        document.getElementById('val-source').textContent = 'RailCore Live Telemetry';
+
+        // GPS
+        const lat = data.latitude != null ? data.latitude : data.position?.latitude;
+        const lon = data.longitude != null ? data.longitude : data.position?.longitude;
+        document.getElementById('val-lat').textContent = lat != null ? Number(lat).toFixed(4) : 'Railway Track Aligned';
+        document.getElementById('val-lon').textContent = lon != null ? Number(lon).toFixed(4) : 'Railway Track Aligned';
+        document.getElementById('val-provider').textContent = 'RailCore API (ir.railcore.tech)';
+        document.getElementById('val-updated').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        // Raw JSON
+        document.getElementById('val-raw-json').textContent = JSON.stringify(json, null, 2);
+    }
+
+    // Auto-fetch on load
+    loadLiveData();
+</script>
+
+</body>
+</html>

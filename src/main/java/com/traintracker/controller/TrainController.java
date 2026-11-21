@@ -57,9 +57,9 @@ public class TrainController {
         if (t == null) return ResponseEntity.notFound().build();
 
         Route route = routeRepo.findByTrain_TrainId(id).orElse(null);
-        if (route == null || route.getGeometryGeoJson() == null || route.getGeometryGeoJson().length() < 300) {
+        if (route == null || route.getGeometryGeoJson() == null || route.getGeometryGeoJson().isBlank()) {
             String fresh = providerService.fetchRouteGeometry(t.getTrainNumber());
-            if (fresh != null && fresh.length() > 300) {
+            if (fresh != null && fresh.length() > 50) {
                 if (route == null) {
                     route = new Route();
                     route.setTrain(t);
@@ -76,6 +76,43 @@ public class TrainController {
                     .body(route.getGeometryGeoJson());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/all-tracks")
+    public ResponseEntity<List<Map<String, Object>>> getAllTracks() {
+        List<Train> trains = trainService.getAll();
+        List<Map<String, Object>> list = new java.util.ArrayList<>();
+        for (Train t : trains) {
+            Map<String, Object> item = new java.util.HashMap<>();
+            item.put("trainId", t.getTrainId());
+            item.put("trainNumber", t.getTrainNumber());
+            item.put("trainName", t.getTrainName());
+            item.put("status", t.getStatus());
+            if (t.getSourceStation() != null) {
+                item.put("sourceStation", t.getSourceStation().getStationName());
+            }
+            if (t.getDestinationStation() != null) {
+                item.put("destinationStation", t.getDestinationStation().getStationName());
+            }
+            routeRepo.findByTrain_TrainId(t.getTrainId()).ifPresent(r -> {
+                item.put("geometryGeoJson", r.getGeometryGeoJson());
+            });
+            list.add(item);
+        }
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/live-api/{trainNumber}")
+    public ResponseEntity<String> getLiveApiStatus(@PathVariable String trainNumber) {
+        String raw = providerService.fetchRawLiveStatus(trainNumber);
+        if (raw != null) {
+            return ResponseEntity.ok()
+                    .header("Content-Type", "application/json")
+                    .body(raw);
+        }
+        return ResponseEntity.status(502)
+                .header("Content-Type", "application/json")
+                .body("{\"status\":\"ERROR\",\"message\":\"Unable to fetch live status for train " + trainNumber + " from RailCore API\"}");
     }
 
     @PostMapping("/{id}/track")

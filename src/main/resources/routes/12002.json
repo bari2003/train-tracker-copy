@@ -1,0 +1,694 @@
+﻿{
+    "type":  "FeatureCollection",
+    "features":  [
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "trainNumber":  "12002"
+                                        },
+                         "geometry":  {
+                                          "type":  "LineString",
+                                          "coordinates":  [
+                                                              [
+                                                                  77.2197,
+                                                                  28.6428
+                                                              ],
+                                                              [
+                                                                  77.22818,
+                                                                  28.6293
+                                                              ],
+                                                              [
+                                                                  77.23665,
+                                                                  28.6158
+                                                              ],
+                                                              [
+                                                                  77.24512,
+                                                                  28.6023
+                                                              ],
+                                                              [
+                                                                  77.2536,
+                                                                  28.5888
+                                                              ],
+                                                              [
+                                                                  77.26812,
+                                                                  28.5433
+                                                              ],
+                                                              [
+                                                                  77.28265,
+                                                                  28.4978
+                                                              ],
+                                                              [
+                                                                  77.29718,
+                                                                  28.4523
+                                                              ],
+                                                              [
+                                                                  77.3117,
+                                                                  28.4068
+                                                              ],
+                                                              [
+                                                                  77.31928,
+                                                                  28.341
+                                                              ],
+                                                              [
+                                                                  77.32685,
+                                                                  28.2752
+                                                              ],
+                                                              [
+                                                                  77.33442,
+                                                                  28.2094
+                                                              ],
+                                                              [
+                                                                  77.342,
+                                                                  28.1436
+                                                              ],
+                                                              [
+                                                                  77.36728,
+                                                                  28.05638
+                                                              ],
+                                                              [
+                                                                  77.39255,
+                                                                  27.96915
+                                                              ],
+                                                              [
+                                                                  77.41782,
+                                                                  27.88192
+                                                              ],
+                                                              [
+                                                                  77.4431,
+                                                                  27.7947
+                                                              ],
+                                                              [
+                                                                  77.50075,
+                                                                  27.71912
+                                                              ],
+                                                              [
+                                                                  77.5584,
+                                                                  27.64355
+                                                              ],
+                                                              [
+                                                                  77.61605,
+                                                                  27.56798
+                                                              ],
+                                                              [
+                                                                  77.6737,
+                                                                  27.4924
+                                                              ],
+                                                              [
+                                                                  77.75482,
+                                                                  27.41902
+                                                              ],
+                                                              [
+                                                                  77.83595,
+                                                                  27.34565
+                                                              ],
+                                                              [
+                                                                  77.91708,
+                                                                  27.27228
+                                                              ],
+                                                              [
+                                                                  77.9982,
+                                                                  27.1989
+                                                              ],
+                                                              [
+                                                                  78.00165,
+                                                                  27.18895
+                                                              ],
+                                                              [
+                                                                  78.0051,
+                                                                  27.179
+                                                              ],
+                                                              [
+                                                                  78.00855,
+                                                                  27.16905
+                                                              ],
+                                                              [
+                                                                  78.012,
+                                                                  27.1591
+                                                              ],
+                                                              [
+                                                                  77.982,
+                                                                  27.04495
+                                                              ],
+                                                              [
+                                                                  77.952,
+                                                                  26.9308
+                                                              ],
+                                                              [
+                                                                  77.922,
+                                                                  26.81665
+                                                              ],
+                                                              [
+                                                                  77.892,
+                                                                  26.7025
+                                                              ],
+                                                              [
+                                                                  77.92028,
+                                                                  26.65235
+                                                              ],
+                                                              [
+                                                                  77.94855,
+                                                                  26.6022
+                                                              ],
+                                                              [
+                                                                  77.97682,
+                                                                  26.55205
+                                                              ],
+                                                              [
+                                                                  78.0051,
+                                                                  26.5019
+                                                              ],
+                                                              [
+                                                                  78.04932,
+                                                                  26.431
+                                                              ],
+                                                              [
+                                                                  78.09355,
+                                                                  26.3601
+                                                              ],
+                                                              [
+                                                                  78.13778,
+                                                                  26.2892
+                                                              ],
+                                                              [
+                                                                  78.182,
+                                                                  26.2183
+                                                              ],
+                                                              [
+                                                                  78.2193,
+                                                                  26.1365
+                                                              ],
+                                                              [
+                                                                  78.2566,
+                                                                  26.0547
+                                                              ],
+                                                              [
+                                                                  78.2939,
+                                                                  25.9729
+                                                              ],
+                                                              [
+                                                                  78.3312,
+                                                                  25.8911
+                                                              ],
+                                                              [
+                                                                  78.3637,
+                                                                  25.83578
+                                                              ],
+                                                              [
+                                                                  78.3962,
+                                                                  25.78045
+                                                              ],
+                                                              [
+                                                                  78.4287,
+                                                                  25.72512
+                                                              ],
+                                                              [
+                                                                  78.4612,
+                                                                  25.6698
+                                                              ],
+                                                              [
+                                                                  78.48803,
+                                                                  25.61445
+                                                              ],
+                                                              [
+                                                                  78.51485,
+                                                                  25.5591
+                                                              ],
+                                                              [
+                                                                  78.54168,
+                                                                  25.50375
+                                                              ],
+                                                              [
+                                                                  78.5685,
+                                                                  25.4484
+                                                              ],
+                                                              [
+                                                                  78.5444,
+                                                                  25.39668
+                                                              ],
+                                                              [
+                                                                  78.5203,
+                                                                  25.34495
+                                                              ],
+                                                              [
+                                                                  78.4962,
+                                                                  25.29322
+                                                              ],
+                                                              [
+                                                                  78.4721,
+                                                                  25.2415
+                                                              ],
+                                                              [
+                                                                  78.46187,
+                                                                  25.19165
+                                                              ],
+                                                              [
+                                                                  78.45165,
+                                                                  25.1418
+                                                              ],
+                                                              [
+                                                                  78.44143,
+                                                                  25.09195
+                                                              ],
+                                                              [
+                                                                  78.4312,
+                                                                  25.0421
+                                                              ],
+                                                              [
+                                                                  78.42628,
+                                                                  24.95438
+                                                              ],
+                                                              [
+                                                                  78.42135,
+                                                                  24.86665
+                                                              ],
+                                                              [
+                                                                  78.41642,
+                                                                  24.77892
+                                                              ],
+                                                              [
+                                                                  78.4115,
+                                                                  24.6912
+                                                              ],
+                                                              [
+                                                                  78.35573,
+                                                                  24.56228
+                                                              ],
+                                                              [
+                                                                  78.29995,
+                                                                  24.43335
+                                                              ],
+                                                              [
+                                                                  78.24418,
+                                                                  24.30442
+                                                              ],
+                                                              [
+                                                                  78.1884,
+                                                                  24.1755
+                                                              ],
+                                                              [
+                                                                  78.1241,
+                                                                  24.09442
+                                                              ],
+                                                              [
+                                                                  78.0598,
+                                                                  24.01335
+                                                              ],
+                                                              [
+                                                                  77.9955,
+                                                                  23.93227
+                                                              ],
+                                                              [
+                                                                  77.9312,
+                                                                  23.8512
+                                                              ],
+                                                              [
+                                                                  77.90295,
+                                                                  23.7705
+                                                              ],
+                                                              [
+                                                                  77.8747,
+                                                                  23.6898
+                                                              ],
+                                                              [
+                                                                  77.84645,
+                                                                  23.6091
+                                                              ],
+                                                              [
+                                                                  77.8182,
+                                                                  23.5284
+                                                              ],
+                                                              [
+                                                                  77.79172,
+                                                                  23.5066
+                                                              ],
+                                                              [
+                                                                  77.76525,
+                                                                  23.4848
+                                                              ],
+                                                              [
+                                                                  77.73878,
+                                                                  23.463
+                                                              ],
+                                                              [
+                                                                  77.7123,
+                                                                  23.4412
+                                                              ],
+                                                              [
+                                                                  77.63737,
+                                                                  23.39587
+                                                              ],
+                                                              [
+                                                                  77.56245,
+                                                                  23.35055
+                                                              ],
+                                                              [
+                                                                  77.48753,
+                                                                  23.30522
+                                                              ],
+                                                              [
+                                                                  77.4126,
+                                                                  23.2599
+                                                              ],
+                                                              [
+                                                                  77.4194,
+                                                                  23.24582
+                                                              ],
+                                                              [
+                                                                  77.4262,
+                                                                  23.23175
+                                                              ],
+                                                              [
+                                                                  77.433,
+                                                                  23.21768
+                                                              ],
+                                                              [
+                                                                  77.4398,
+                                                                  23.2036
+                                                              ]
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "NDLS",
+                                            "stationName":  "New Delhi"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              77.2197,
+                                                              28.6428
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "NZM",
+                                            "stationName":  "Hazrat Nizamuddin"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              77.2536,
+                                                              28.5888
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "FDB",
+                                            "stationName":  "Faridabad"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              77.3117,
+                                                              28.4068
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "PWL",
+                                            "stationName":  "Palwal"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              77.342,
+                                                              28.1436
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "KSV",
+                                            "stationName":  "Kosi Kalan"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              77.4431,
+                                                              27.7947
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "MTJ",
+                                            "stationName":  "Mathura Junction"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              77.6737,
+                                                              27.4924
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "RKM",
+                                            "stationName":  "Raja Ki Mandi"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              77.9982,
+                                                              27.1989
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "AGC",
+                                            "stationName":  "Agra Cantt"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              78.012,
+                                                              27.1591
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "DHO",
+                                            "stationName":  "Dholpur Junction"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              77.892,
+                                                              26.7025
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "MRA",
+                                            "stationName":  "Morena"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              78.0051,
+                                                              26.5019
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "GWL",
+                                            "stationName":  "Gwalior Junction"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              78.182,
+                                                              26.2183
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "DBA",
+                                            "stationName":  "Dabra"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              78.3312,
+                                                              25.8911
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "DAA",
+                                            "stationName":  "Datia"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              78.4612,
+                                                              25.6698
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "VGLJ",
+                                            "stationName":  "Veerangana Lakshmibai Jhansi"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              78.5685,
+                                                              25.4484
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "BAB",
+                                            "stationName":  "Babina"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              78.4721,
+                                                              25.2415
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "TBT",
+                                            "stationName":  "Talbahat"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              78.4312,
+                                                              25.0421
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "LAR",
+                                            "stationName":  "Lalitpur Junction"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              78.4115,
+                                                              24.6912
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "BINA",
+                                            "stationName":  "Bina Junction"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              78.1884,
+                                                              24.1755
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "BAQ",
+                                            "stationName":  "Ganj Basoda"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              77.9312,
+                                                              23.8512
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "BHS",
+                                            "stationName":  "Vidisha"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              77.8182,
+                                                              23.5284
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "SMT",
+                                            "stationName":  "Salamatpur"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              77.7123,
+                                                              23.4412
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "BPL",
+                                            "stationName":  "Bhopal Junction"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              77.4126,
+                                                              23.2599
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "RKMP",
+                                            "stationName":  "Rani Kamalapati"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              77.4398,
+                                                              23.2036
+                                                          ]
+                                      }
+                     }
+                 ]
+}

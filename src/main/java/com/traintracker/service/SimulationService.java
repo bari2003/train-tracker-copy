@@ -52,12 +52,19 @@ public class SimulationService {
             JsonNode coords = positionService.extractCoordinatesNode(root);
             if (coords == null || coords.isMissingNode() || coords.size() == 0) return t;
 
-            AtomicInteger idx = positions.computeIfAbsent(trainNumber, k -> new AtomicInteger(0));
+            AtomicInteger idx = positions.computeIfAbsent(trainNumber, k -> {
+                int total = coords.size();
+                if (total <= 4) return new AtomicInteger(0);
+                int hash = Math.abs(trainNumber.hashCode());
+                int initial = (int) (total * (0.25 + (hash % 45) / 100.0));
+                return new AtomicInteger(Math.min(initial, total - 2));
+            });
             int i = idx.getAndUpdate(v -> (v + 1) % coords.size());
 
             JsonNode pt = coords.get(i);
             t.setLongitude(pt.get(0).asDouble());
             t.setLatitude(pt.get(1).asDouble());
+            t.setSegmentProgress((double) i / (double) coords.size());
 
             // Calculate bearing to next point
             if (i < coords.size() - 1) {

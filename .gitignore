@@ -34,3 +34,6 @@ build/
 .system_generated/
 *.tmp
 update_route.sql
+.mvn/wrapper/apache-maven-*/
+.mvn/wrapper/*.zip
+railcore_test_*.json

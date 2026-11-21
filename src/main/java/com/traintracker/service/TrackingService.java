@@ -99,9 +99,9 @@ public class TrackingService {
         Route route = routeRepo.findByTrain_TrainId(trainId).orElse(null);
         String geoJson = (route != null) ? route.getGeometryGeoJson() : null;
 
-        if (!config.isSimulationEnabled() && (geoJson == null || geoJson.length() < 300)) {
+        if (!config.isSimulationEnabled() && (geoJson == null || geoJson.isBlank())) {
             String freshRoute = providerService.fetchRouteGeometry(train.getTrainNumber());
-            if (freshRoute != null && freshRoute.length() > 300) {
+            if (freshRoute != null && freshRoute.length() > 50) {
                 if (route == null) {
                     route = new Route();
                     route.setTrain(train);

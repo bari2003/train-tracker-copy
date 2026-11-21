@@ -1,47 +1,36 @@
 ﻿# ==============================================================================
-# Generate_PPT.ps1 — Native PowerPoint Generator via Microsoft Office COM
-# Outputs:
-#   1. Real_Time_Train_Movement_Tracker.ppt   (.ppt format)
-#   2. Real_Time_Train_Movement_Tracker.pptx  (.pptx format)
-#   3. Real_Time_Train_Movement_Tracker.pdf   (.pdf format)
+# Generate_PPT.ps1 — Native PowerPoint Generator via Microsoft Office COM (.ppt)
 # ==============================================================================
 
-Write-Host "Initializing Microsoft PowerPoint COM Automation..." -ForegroundColor Cyan
-
 $pptApp = New-Object -ComObject PowerPoint.Application
-# MsoTriState: msoTrue = -1, msoFalse = 0
+# msoTrue = -1, msoFalse = 0
 $pres = $pptApp.Presentations.Add(-1)
 
-# Set 16:9 Widescreen Layout (960pt x 540pt)
+# Set 16:9 Widescreen (960pt x 540pt)
 $pres.PageSetup.SlideWidth = 960
 $pres.PageSetup.SlideHeight = 540
 
-# Color Constants (RGB integers)
-$COLOR_BG        = 0x0F172A   # Dark Slate Blue (#0F172A -> BGR: 0x2A170F)
-# Note: PowerPoint COM ColorFormat.RGB uses 0xBBGGRR or (R + G*256 + B*65536)
 function Get-RGB([int]$r, [int]$g, [int]$b) {
     return ($r + ($g * 256) + ($b * 65536))
 }
 
-$RGB_BG          = Get-RGB 15 23 42      # #0F172A
-$RGB_CARD        = Get-RGB 30 41 59      # #1E293B
-$RGB_BORDER      = Get-RGB 51 65 85      # #334155
-$RGB_ACCENT      = Get-RGB 255 42 95     # #FF2A5F (Coral Red)
-$RGB_CYAN        = Get-RGB 6 182 212     # #06B6D4 (Cyan)
-$RGB_GREEN       = Get-RGB 16 185 129    # #10B981 (Emerald)
-$RGB_WHITE       = Get-RGB 255 255 255   # White
-$RGB_MUTED       = Get-RGB 148 163 184   # #94A3B8 (Slate Gray)
-$RGB_HEADER_BG   = Get-RGB 20 30 48
+$RGB_BG        = Get-RGB 15 23 42      # #0F172A
+$RGB_CARD      = Get-RGB 30 41 59      # #1E293B
+$RGB_BORDER    = Get-RGB 71 85 105     # #475569
+$RGB_ACCENT    = Get-RGB 255 42 95     # #FF2A5F
+$RGB_CYAN      = Get-RGB 6 182 212     # #06B6D4
+$RGB_WHITE     = Get-RGB 255 255 255   # White
+$RGB_BODY      = Get-RGB 226 232 240   # #E2E8F0 (Crisp Light Text)
+$RGB_MUTED     = Get-RGB 148 163 184   # #94A3B8
+$RGB_HEADER_BG = Get-RGB 30 58 138     # #1E3A8A
 
-# Helper: Add Standard Slide Background & Header
 function Add-SlideChrome($slide, [string]$category, [string]$title, [int]$slideNum) {
-    # Set background
     $slide.FollowMasterBackground = 0
     $slide.Background.Fill.Solid()
     $slide.Background.Fill.ForeColor.RGB = $RGB_BG
 
     # Category Pill Tag
-    $tag = $slide.Shapes.AddTextbox(1, 40, 20, 400, 24)
+    $tag = $slide.Shapes.AddTextbox(1, 40, 20, 500, 22)
     $tag.TextFrame.MarginLeft = 0
     $tag.TextFrame.MarginTop = 0
     $tag.TextFrame.TextRange.Text = $category.ToUpper()
@@ -51,7 +40,7 @@ function Add-SlideChrome($slide, [string]$category, [string]$title, [int]$slideN
     $tag.TextFrame.TextRange.Font.Color.RGB = $RGB_ACCENT
 
     # Title
-    $titleBox = $slide.Shapes.AddTextbox(1, 40, 44, 750, 44)
+    $titleBox = $slide.Shapes.AddTextbox(1, 40, 42, 800, 46)
     $titleBox.TextFrame.MarginLeft = 0
     $titleBox.TextFrame.MarginTop = 0
     $titleBox.TextFrame.TextRange.Text = $title
@@ -60,7 +49,7 @@ function Add-SlideChrome($slide, [string]$category, [string]$title, [int]$slideN
     $titleBox.TextFrame.TextRange.Font.Bold = -1
     $titleBox.TextFrame.TextRange.Font.Color.RGB = $RGB_WHITE
 
-    # Divider line
+    # Divider Line
     $line = $slide.Shapes.AddLine(40, 92, 920, 92)
     $line.Line.ForeColor.RGB = $RGB_BORDER
     $line.Line.Weight = 1
@@ -69,23 +58,20 @@ function Add-SlideChrome($slide, [string]$category, [string]$title, [int]$slideN
     $footer = $slide.Shapes.AddTextbox(1, 600, 505, 320, 24)
     $footer.TextFrame.TextRange.Text = "Slide $slideNum of 10  |  Train Tracker"
     $footer.TextFrame.TextRange.Font.Name = "Segoe UI"
-    $footer.TextFrame.TextRange.Font.Size = 9
+    $footer.TextFrame.TextRange.Font.Size = 9.5
     $footer.TextFrame.TextRange.Font.Color.RGB = $RGB_MUTED
     $footer.TextFrame.TextRange.ParagraphFormat.Alignment = 3 # Right
 }
 
-# Helper: Add Formatted Content Card
 function Add-Card($slide, [float]$x, [float]$y, [float]$w, [float]$h, [string]$icon, [string]$title, [string]$body) {
-    # Shape type 9 = msoShapeRoundedRectangle
-    $card = $slide.Shapes.AddShape(9, $x, $y, $w, $h)
+    $card = $slide.Shapes.AddShape(1, $x, $y, $w, $h) # 1 = msoShapeRectangle
     $card.Fill.Solid()
     $card.Fill.ForeColor.RGB = $RGB_CARD
     $card.Line.ForeColor.RGB = $RGB_BORDER
     $card.Line.Weight = 1
-    $card.Adjustments.Item(1) = 0.04 # small corner radius
 
-    # Header in Card
-    $hdr = $slide.Shapes.AddTextbox(1, $x + 16, $y + 12, $w - 32, 30)
+    # Card Title
+    $hdr = $slide.Shapes.AddTextbox(1, $x + 14, $y + 12, $w - 28, 28)
     $hdr.TextFrame.MarginLeft = 0
     $hdr.TextFrame.MarginTop = 0
     $hdr.TextFrame.TextRange.Text = "$icon  $title"
@@ -94,81 +80,73 @@ function Add-Card($slide, [float]$x, [float]$y, [float]$w, [float]$h, [string]$i
     $hdr.TextFrame.TextRange.Font.Bold = -1
     $hdr.TextFrame.TextRange.Font.Color.RGB = $RGB_CYAN
 
-    # Body in Card
-    $txt = $slide.Shapes.AddTextbox(1, $x + 16, $y + 45, $w - 32, $h - 55)
+    # Card Body
+    $txt = $slide.Shapes.AddTextbox(1, $x + 14, $y + 44, $w - 28, $h - 52)
     $txt.TextFrame.MarginLeft = 0
     $txt.TextFrame.MarginTop = 0
     $txt.TextFrame.WordWrap = -1
     $txt.TextFrame.TextRange.Text = $body
     $txt.TextFrame.TextRange.Font.Name = "Segoe UI"
     $txt.TextFrame.TextRange.Font.Size = 10.5
-    $txt.TextFrame.TextRange.Font.Color.RGB = $RGB_MUTED
+    $txt.TextFrame.TextRange.Font.Color.RGB = $RGB_BODY
     $txt.TextFrame.TextRange.ParagraphFormat.SpaceWithin = 1.25
 }
 
-# ==============================================================================
-# SLIDE 1: TITLE SLIDE
-# ==============================================================================
-Write-Host "Creating Slide 1: Title..."
+# ------------------------------------------------------------------------------
+# SLIDE 1: Title
+# ------------------------------------------------------------------------------
 $s1 = $pres.Slides.Add(1, 12)
 $s1.FollowMasterBackground = 0
 $s1.Background.Fill.Solid()
 $s1.Background.Fill.ForeColor.RGB = $RGB_BG
 
-# Hero Card Container
-$hero = $s1.Shapes.AddShape(9, 60, 50, 840, 440)
+$hero = $s1.Shapes.AddShape(1, 50, 40, 860, 460)
 $hero.Fill.Solid()
 $hero.Fill.ForeColor.RGB = $RGB_CARD
 $hero.Line.ForeColor.RGB = $RGB_BORDER
 $hero.Line.Weight = 1.5
 
-# Top Badge
-$s1Badge = $s1.Shapes.AddTextbox(1, 100, 90, 400, 24)
-$s1Badge.TextFrame.TextRange.Text = "ENTERPRISE GIS & TELEMETRY PLATFORM"
-$s1Badge.TextFrame.TextRange.Font.Name = "Segoe UI"
-$s1Badge.TextFrame.TextRange.Font.Size = 11
-$s1Badge.TextFrame.TextRange.Font.Bold = -1
-$s1Badge.TextFrame.TextRange.Font.Color.RGB = $RGB_ACCENT
+$b1 = $s1.Shapes.AddTextbox(1, 90, 80, 500, 24)
+$b1.TextFrame.TextRange.Text = "ENTERPRISE GIS & LIVE TRANSIT TELEMETRY"
+$b1.TextFrame.TextRange.Font.Name = "Segoe UI"
+$b1.TextFrame.TextRange.Font.Size = 11
+$b1.TextFrame.TextRange.Font.Bold = -1
+$b1.TextFrame.TextRange.Font.Color.RGB = $RGB_ACCENT
 
-# Main Title
-$s1Title = $s1.Shapes.AddTextbox(1, 100, 125, 760, 90)
-$s1Title.TextFrame.TextRange.Text = "Real-Time Train Movement Tracker"
-$s1Title.TextFrame.TextRange.Font.Name = "Segoe UI"
-$s1Title.TextFrame.TextRange.Font.Size = 34
-$s1Title.TextFrame.TextRange.Font.Bold = -1
-$s1Title.TextFrame.TextRange.Font.Color.RGB = $RGB_WHITE
+$t1 = $s1.Shapes.AddTextbox(1, 90, 115, 780, 80)
+$t1.TextFrame.TextRange.Text = "Real-Time Train Movement Tracker"
+$t1.TextFrame.TextRange.Font.Name = "Segoe UI"
+$t1.TextFrame.TextRange.Font.Size = 34
+$t1.TextFrame.TextRange.Font.Bold = -1
+$t1.TextFrame.TextRange.Font.Color.RGB = $RGB_WHITE
 
-# Subtitle
-$s1Sub = $s1.Shapes.AddTextbox(1, 100, 215, 760, 40)
-$s1Sub.TextFrame.TextRange.Text = "Track-Level Geographic Visualisation, Live Telemetry & WebSocket Streaming"
-$s1Sub.TextFrame.TextRange.Font.Name = "Segoe UI"
-$s1Sub.TextFrame.TextRange.Font.Size = 15
-$s1Sub.TextFrame.TextRange.Font.Color.RGB = $RGB_CYAN
+$sub1 = $s1.Shapes.AddTextbox(1, 90, 205, 780, 35)
+$sub1.TextFrame.TextRange.Text = "Track-Level Visualisation, Live Telemetry Ingestion & WebSocket Streaming"
+$sub1.TextFrame.TextRange.Font.Name = "Segoe UI"
+$sub1.TextFrame.TextRange.Font.Size = 15
+$sub1.TextFrame.TextRange.Font.Color.RGB = $RGB_CYAN
 
-# Metadata Grid
-$s1Meta = $s1.Shapes.AddTextbox(1, 100, 280, 760, 160)
-$s1Meta.TextFrame.WordWrap = -1
-$s1Meta.TextFrame.TextRange.Text = "Author: Abdul Bari`nTechnology: Java 27  |  Spring Boot 3.2.5  |  Leaflet.js  |  OpenRailwayMap  |  MySQL 8.0`nLive Deployment: https://national-quad-alumni-fastest.trycloudflare.com`nRepository: https://github.com/bari2003/train-tracker"
-$s1Meta.TextFrame.TextRange.Font.Name = "Segoe UI"
-$s1Meta.TextFrame.TextRange.Font.Size = 12
-$s1Meta.TextFrame.TextRange.Font.Color.RGB = $RGB_MUTED
-$s1Meta.TextFrame.TextRange.ParagraphFormat.SpaceWithin = 1.4
+$m1 = $s1.Shapes.AddTextbox(1, 90, 260, 780, 190)
+$m1.TextFrame.WordWrap = -1
+$m1.TextFrame.TextRange.Text = "Author: Abdul Bari`n`nCore Stack: Java 27  |  Spring Boot 3.2.5  |  Leaflet.js  |  OpenRailwayMap  |  MySQL 8.0`n`nLive Web Deployment: https://national-quad-alumni-fastest.trycloudflare.com`nGitHub Repository: https://github.com/bari2003/train-tracker"
+$m1.TextFrame.TextRange.Font.Name = "Segoe UI"
+$m1.TextFrame.TextRange.Font.Size = 12
+$m1.TextFrame.TextRange.Font.Color.RGB = $RGB_BODY
+$m1.TextFrame.TextRange.ParagraphFormat.SpaceWithin = 1.3
 
-# ==============================================================================
-# SLIDE 2: PROBLEM STATEMENT
-# ==============================================================================
-Write-Host "Creating Slide 2: Problem Statement..."
+# ------------------------------------------------------------------------------
+# SLIDE 2: Problem Statement
+# ------------------------------------------------------------------------------
 $s2 = $pres.Slides.Add(2, 12)
 Add-SlideChrome $s2 "CONTEXT & MOTIVATION" "Why Train Movement Tracking?" 2
 
-$s2Desc = $s2.Shapes.AddTextbox(1, 40, 105, 880, 40)
-$s2Desc.TextFrame.TextRange.Text = "Traditional railway portals leave commuters with uncertainty between distant stations. Train Tracker bridges raw tabular feeds and authentic spatial rail navigation."
-$s2Desc.TextFrame.TextRange.Font.Name = "Segoe UI"
-$s2Desc.TextFrame.TextRange.Font.Size = 11.5
-$s2Desc.TextFrame.TextRange.Font.Color.RGB = $RGB_MUTED
+$desc2 = $s2.Shapes.AddTextbox(1, 40, 102, 880, 35)
+$desc2.TextFrame.TextRange.Text = "Traditional railway portals leave commuters with uncertainty between distant stations. Train Tracker bridges raw tabular feeds and authentic spatial rail navigation."
+$desc2.TextFrame.TextRange.Font.Name = "Segoe UI"
+$desc2.TextFrame.TextRange.Font.Size = 11
+$desc2.TextFrame.TextRange.Font.Color.RGB = $RGB_BODY
 
-# Comparison Table
-$tbl2 = $s2.Shapes.AddTable(5, 2, 40, 155, 880, 320)
+$tbl2 = $s2.Shapes.AddTable(5, 2, 40, 145, 880, 335)
 $tbl2.Table.Columns.Item(1).Width = 440
 $tbl2.Table.Columns.Item(2).Width = 440
 
@@ -199,14 +177,13 @@ for ($r = 0; $r -lt 4; $r++) {
         $cell.Shape.TextFrame.TextRange.Text = $tRows[$r][$c-1]
         $cell.Shape.TextFrame.TextRange.Font.Name = "Segoe UI"
         $cell.Shape.TextFrame.TextRange.Font.Size = 10.5
-        $cell.Shape.TextFrame.TextRange.Font.Color.RGB = if ($c -eq 1) { $RGB_MUTED } else { $RGB_WHITE }
+        $cell.Shape.TextFrame.TextRange.Font.Color.RGB = if ($c -eq 1) { $RGB_MUTED } else { $RGB_BODY }
     }
 }
 
-# ==============================================================================
-# SLIDE 3: SYSTEM ARCHITECTURE
-# ==============================================================================
-Write-Host "Creating Slide 3: Architecture..."
+# ------------------------------------------------------------------------------
+# SLIDE 3: Architecture
+# ------------------------------------------------------------------------------
 $s3 = $pres.Slides.Add(3, 12)
 Add-SlideChrome $s3 "TECHNICAL ARCHITECTURE" "System Architecture & Data Pipeline" 3
 
@@ -219,10 +196,9 @@ Add-Card $s3 342 120 275 365 "⚙️" "2. Processing Core" `
 Add-Card $s3 645 120 275 365 "🗺️" "3. Presentation Layer" `
 "• Leaflet.js with OpenRailwayMap layer`n• STOMP over SockJS WebSocket pub/sub`n• Smooth 800ms linear interpolation (LERP)`n• Pulsing radar beacon & dynamic bearing rotation`n• Zero-disconnect multi-train switching"
 
-# ==============================================================================
-# SLIDE 4: CORE TECHNICAL INNOVATIONS
-# ==============================================================================
-Write-Host "Creating Slide 4: Innovations..."
+# ------------------------------------------------------------------------------
+# SLIDE 4: Core Technical Innovations
+# ------------------------------------------------------------------------------
 $s4 = $pres.Slides.Add(4, 12)
 Add-SlideChrome $s4 "SPATIAL ENGINEERING" "Core Technical Innovations" 4
 
@@ -232,35 +208,33 @@ Add-Card $s4 40 120 425 175 "📐" "Haversine Geodesic Interpolation" `
 Add-Card $s4 495 120 425 175 "🎯" "Perpendicular Track Snapping" `
 "Detects GPS reporting drift and orthogonally projects reported coordinates onto the nearest track vector segment within a 500m threshold, eliminating visual jitter."
 
-Add-Card $s4 40 310 425 175 "🔄" "Zero-Downtime Multi-Train Switching" `
+Add-Card $s4 40 310 425 175 "🔄" "Zero-Downtime Train Switching" `
 "Persistent WebSocket connection that dynamically swaps STOMP topic subscriptions (/topic/train/{id}) without connection teardowns or handshake overhead."
 
 Add-Card $s4 495 310 425 175 "✨" "Smooth LERP Marker Motion" `
 "Animates the train marker smoothly using requestAnimationFrame over 800ms, rotating the train icon to match the track heading angle (bearing) in real time."
 
-# ==============================================================================
-# SLIDE 5: RESILIENCE & QUOTA FALLBACK
-# ==============================================================================
-Write-Host "Creating Slide 5: Resilience..."
+# ------------------------------------------------------------------------------
+# SLIDE 5: Resilience & Quota Fallback
+# ------------------------------------------------------------------------------
 $s5 = $pres.Slides.Add(5, 12)
 Add-SlideChrome $s5 "SYSTEM RELIABILITY" "Resilience & Quota Fallback Engine" 5
 
-$s5Desc = $s5.Shapes.AddTextbox(1, 40, 105, 880, 40)
-$s5Desc.TextFrame.TextRange.Text = "Third-party transit APIs enforce monthly request limits (HTTP 429). Train Tracker incorporates an intelligent dual-mode fallback architecture that guarantees zero application freezes."
-$s5Desc.TextFrame.TextRange.Font.Name = "Segoe UI"
-$s5Desc.TextFrame.TextRange.Font.Size = 11.5
-$s5Desc.TextFrame.TextRange.Font.Color.RGB = $RGB_MUTED
+$desc5 = $s5.Shapes.AddTextbox(1, 40, 102, 880, 35)
+$desc5.TextFrame.TextRange.Text = "Third-party transit APIs enforce monthly request limits (HTTP 429). Train Tracker incorporates an intelligent dual-mode fallback architecture that guarantees zero application freezes."
+$desc5.TextFrame.TextRange.Font.Name = "Segoe UI"
+$desc5.TextFrame.TextRange.Font.Size = 11
+$desc5.TextFrame.TextRange.Font.Color.RGB = $RGB_BODY
 
-Add-Card $s5 40 160 425 325 "🟢" "Live API Mode (Primary)" `
+Add-Card $s5 40 150 425 335 "🟢" "Live API Mode (Primary)" `
 "• Direct ingestion of real-time RailRadar v1 API`n• Live station arrival & departure provenance`n• Exact delay minutes (+18 min late / On time)`n• Real-time departure timestamps & platform info`n• Automatic high-precision route geometry caching`n• Runs whenever external quota is active"
 
-Add-Card $s5 495 160 425 325 "🛡️" "Smart Kinematic Fallback (Resilient)" `
+Add-Card $s5 495 150 425 335 "🛡️" "Smart Kinematic Fallback (Resilient)" `
 "• Triggers automatically on HTTP 429 or network timeouts`n• Computes realistic kinematic progression along physical track polyline`n• Generates accurate bearing and simulated speeds (78-100 km/h)`n• Prevents application freezing or STALE disconnections`n• Transitions back to live API when quota resets"
 
-# ==============================================================================
-# SLIDE 6: MAPPING & VISUALIZATION
-# ==============================================================================
-Write-Host "Creating Slide 6: Mapping Stack..."
+# ------------------------------------------------------------------------------
+# SLIDE 6: Mapping Stack
+# ------------------------------------------------------------------------------
 $s6 = $pres.Slides.Add(6, 12)
 Add-SlideChrome $s6 "USER EXPERIENCE & GIS" "Frontend Mapping & Visualisation Stack" 6
 
@@ -273,24 +247,23 @@ Add-Card $s6 342 120 275 365 "🚆" "OpenRailwayMap Overlay" `
 Add-Card $s6 645 120 275 365 "📊" "Interactive Telemetry HUD" `
 "• Current station indicator (e.g. Departed Limkheda LMK)`n• Next scheduled halt & remaining distance`n• Real-time speed gauge & color-coded delay status`n• Pulsing radar beacon with 'Follow Train' tracking lock`n• 0 ms instant visual data hydration"
 
-# ==============================================================================
-# SLIDE 7: DATABASE SCHEMA
-# ==============================================================================
-Write-Host "Creating Slide 7: Database Schema..."
+# ------------------------------------------------------------------------------
+# SLIDE 7: Database Architecture
+# ------------------------------------------------------------------------------
 $s7 = $pres.Slides.Add(7, 12)
 Add-SlideChrome $s7 "PERSISTENCE LAYER" "Database Architecture & Data Model" 7
 
-$s7Desc = $s7.Shapes.AddTextbox(1, 40, 105, 880, 35)
-$s7Desc.TextFrame.TextRange.Text = "Built on MySQL 8.0 with support for in-memory H2 profiles for testing. Upgraded to LONGTEXT GeoJSON storage to support massive Indian Railways routes containing 220+ stations without truncation."
-$s7Desc.TextFrame.TextRange.Font.Name = "Segoe UI"
-$s7Desc.TextFrame.TextRange.Font.Size = 11
-$s7Desc.TextFrame.TextRange.Font.Color.RGB = $RGB_MUTED
+$desc7 = $s7.Shapes.AddTextbox(1, 40, 102, 880, 35)
+$desc7.TextFrame.TextRange.Text = "Built on MySQL 8.0 with support for in-memory H2 profiles for testing. Upgraded to LONGTEXT GeoJSON storage to support massive Indian Railways routes containing 220+ stations without truncation."
+$desc7.TextFrame.TextRange.Font.Name = "Segoe UI"
+$desc7.TextFrame.TextRange.Font.Size = 11
+$desc7.TextFrame.TextRange.Font.Color.RGB = $RGB_BODY
 
-$tbl7 = $s7.Shapes.AddTable(5, 4, 40, 150, 880, 330)
-$tbl7.Table.Columns.Item(1).Width = 160
+$tbl7 = $s7.Shapes.AddTable(5, 4, 40, 145, 880, 335)
+$tbl7.Table.Columns.Item(1).Width = 150
 $tbl7.Table.Columns.Item(2).Width = 200
-$tbl7.Table.Columns.Item(3).Width = 260
-$tbl7.Table.Columns.Item(4).Width = 260
+$tbl7.Table.Columns.Item(3).Width = 265
+$tbl7.Table.Columns.Item(4).Width = 265
 
 $t7H = @("Table Name", "Primary / Foreign Keys", "Key Attributes & Types", "Description")
 for ($c = 1; $c -le 4; $c++) {
@@ -319,14 +292,13 @@ for ($r = 0; $r -lt 4; $r++) {
         $cell.Shape.TextFrame.TextRange.Text = $t7Rows[$r][$c-1]
         $cell.Shape.TextFrame.TextRange.Font.Name = "Segoe UI"
         $cell.Shape.TextFrame.TextRange.Font.Size = 10
-        $cell.Shape.TextFrame.TextRange.Font.Color.RGB = if ($c -eq 1) { $RGB_WHITE } elseif ($c -eq 3 -and $r -eq 1) { $RGB_ACCENT } else { $RGB_MUTED }
+        $cell.Shape.TextFrame.TextRange.Font.Color.RGB = if ($c -eq 1) { $RGB_WHITE } elseif ($c -eq 3 -and $r -eq 1) { $RGB_ACCENT } else { $RGB_BODY }
     }
 }
 
-# ==============================================================================
-# SLIDE 8: CLOUD DEPLOYMENT
-# ==============================================================================
-Write-Host "Creating Slide 8: Cloud Deployment..."
+# ------------------------------------------------------------------------------
+# SLIDE 8: Cloud Deployment
+# ------------------------------------------------------------------------------
 $s8 = $pres.Slides.Add(8, 12)
 Add-SlideChrome $s8 "DEVOPS & DEPLOYMENT" "Cloud Deployment & Edge Topology" 8
 
@@ -336,8 +308,7 @@ Add-Card $s8 40 120 425 210 "☕" "Application Runtime" `
 Add-Card $s8 495 120 425 210 "☁️" "Cloudflare Zero-Trust Edge" `
 "• Global public HTTPS ingress without router port-forwarding`n• Secure WebSocket proxying with sub-second message delivery`n• Automatic SSL/TLS termination and DDoS mitigation`n• Accessible from any mobile or desktop browser globally"
 
-# Live Link Card
-$linkCard = $s8.Shapes.AddShape(9, 40, 350, 880, 135)
+$linkCard = $s8.Shapes.AddShape(1, 40, 350, 880, 135)
 $linkCard.Fill.Solid()
 $linkCard.Fill.ForeColor.RGB = Get-RGB 14 42 56
 $linkCard.Line.ForeColor.RGB = $RGB_CYAN
@@ -352,10 +323,9 @@ $lTxt.TextFrame.TextRange.Font.Bold = -1
 $lTxt.TextFrame.TextRange.Font.Color.RGB = $RGB_WHITE
 $lTxt.TextFrame.TextRange.ParagraphFormat.SpaceWithin = 1.3
 
-# ==============================================================================
-# SLIDE 9: REAL-WORLD IMPACT
-# ==============================================================================
-Write-Host "Creating Slide 9: Real-World Impact..."
+# ------------------------------------------------------------------------------
+# SLIDE 9: Real-World Applications
+# ------------------------------------------------------------------------------
 $s9 = $pres.Slides.Add(9, 12)
 Add-SlideChrome $s9 "PRACTICAL USE CASES" "Real-World Applications & Industry Impact" 9
 
@@ -371,10 +341,9 @@ Add-Card $s9 40 310 425 175 "🏢" "Station Platform Operations" `
 Add-Card $s9 495 310 425 175 "🚨" "Emergency Response & Maintenance" `
 "Gives control rooms spatial awareness of train positions during block maintenance, signal failures, or emergency track diversions."
 
-# ==============================================================================
-# SLIDE 10: FUTURE ROADMAP & CONCLUSION
-# ==============================================================================
-Write-Host "Creating Slide 10: Future Roadmap & Conclusion..."
+# ------------------------------------------------------------------------------
+# SLIDE 10: Future Roadmap & Conclusion
+# ------------------------------------------------------------------------------
 $s10 = $pres.Slides.Add(10, 12)
 Add-SlideChrome $s10 "CONCLUSION & VISION" "Future Roadmap & Project Conclusion" 10
 
@@ -387,8 +356,7 @@ Add-Card $s10 342 120 275 220 "🤖" "AI Predictive Delay" `
 Add-Card $s10 645 120 275 220 "📱" "Offline-First PWA" `
 "Service Worker caching allowing passengers inside moving trains to view track progression without active internet connectivity."
 
-# Conclusion Banner
-$cBanner = $s10.Shapes.AddShape(9, 40, 360, 880, 125)
+$cBanner = $s10.Shapes.AddShape(1, 40, 360, 880, 125)
 $cBanner.Fill.Solid()
 $cBanner.Fill.ForeColor.RGB = $RGB_CARD
 $cBanner.Line.ForeColor.RGB = $RGB_BORDER
@@ -402,24 +370,16 @@ $cTxt.TextFrame.TextRange.Font.Size = 11.5
 $cTxt.TextFrame.TextRange.Font.Color.RGB = $RGB_WHITE
 $cTxt.TextFrame.TextRange.ParagraphFormat.SpaceWithin = 1.3
 
-# ==============================================================================
-# SAVE PRESENTATIONS
-# ==============================================================================
-$outPpt  = "C:\Users\ABDUL BARI\Documents\train-tracker - Copy\Real_Time_Train_Movement_Tracker.ppt"
-$outPptx = "C:\Users\ABDUL BARI\Documents\train-tracker - Copy\Real_Time_Train_Movement_Tracker.pptx"
-$outPdf  = "C:\Users\ABDUL BARI\Documents\train-tracker - Copy\Real_Time_Train_Movement_Tracker_Slides.pdf"
+# ------------------------------------------------------------------------------
+# SAVE EXCLUSIVELY AS .PPT
+# ------------------------------------------------------------------------------
+$outPpt = "C:\Users\ABDUL BARI\Documents\train-tracker - Copy\Real_Time_Train_Movement_Tracker.ppt"
 
-Write-Host "Saving as .ppt format (ppSaveAsPresentation = 1)..." -ForegroundColor Yellow
+# 1 = ppSaveAsPresentation (.ppt format)
 $pres.SaveAs($outPpt, 1)
-
-Write-Host "Saving as .pptx format (ppSaveAsDefault = 11)..." -ForegroundColor Yellow
-$pres.SaveAs($outPptx, 11)
-
-Write-Host "Saving as .pdf format (ppSaveAsPDF = 32)..." -ForegroundColor Yellow
-$pres.SaveAs($outPdf, 32)
 
 $pres.Close()
 $pptApp.Quit()
 [System.Runtime.InteropServices.Marshal]::ReleaseComObject($pptApp) | Out-Null
 
-Write-Host "SUCCESS! All presentation formats generated successfully!" -ForegroundColor Green
+Write-Host "SUCCESS: Generated proper .ppt presentation at: $outPpt"

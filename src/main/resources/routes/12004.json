@@ -1,0 +1,214 @@
+﻿{
+    "type":  "FeatureCollection",
+    "features":  [
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "trainNumber":  "12004"
+                                        },
+                         "geometry":  {
+                                          "type":  "LineString",
+                                          "coordinates":  [
+                                                              [
+                                                                  77.2197,
+                                                                  28.6428
+                                                              ],
+                                                              [
+                                                                  77.27823,
+                                                                  28.6494
+                                                              ],
+                                                              [
+                                                                  77.33675,
+                                                                  28.656
+                                                              ],
+                                                              [
+                                                                  77.39528,
+                                                                  28.6626
+                                                              ],
+                                                              [
+                                                                  77.4538,
+                                                                  28.6692
+                                                              ],
+                                                              [
+                                                                  77.61065,
+                                                                  28.4747
+                                                              ],
+                                                              [
+                                                                  77.7675,
+                                                                  28.2802
+                                                              ],
+                                                              [
+                                                                  77.92435,
+                                                                  28.0857
+                                                              ],
+                                                              [
+                                                                  78.0812,
+                                                                  27.8912
+                                                              ],
+                                                              [
+                                                                  78.1212,
+                                                                  27.7212
+                                                              ],
+                                                              [
+                                                                  78.1612,
+                                                                  27.5512
+                                                              ],
+                                                              [
+                                                                  78.2012,
+                                                                  27.3812
+                                                              ],
+                                                              [
+                                                                  78.2412,
+                                                                  27.2112
+                                                              ],
+                                                              [
+                                                                  78.4387,
+                                                                  27.1012
+                                                              ],
+                                                              [
+                                                                  78.6362,
+                                                                  26.9912
+                                                              ],
+                                                              [
+                                                                  78.8337,
+                                                                  26.8812
+                                                              ],
+                                                              [
+                                                                  79.0312,
+                                                                  26.7712
+                                                              ],
+                                                              [
+                                                                  79.35638,
+                                                                  26.69088
+                                                              ],
+                                                              [
+                                                                  79.68155,
+                                                                  26.61055
+                                                              ],
+                                                              [
+                                                                  80.00672,
+                                                                  26.53022
+                                                              ],
+                                                              [
+                                                                  80.3319,
+                                                                  26.4499
+                                                              ],
+                                                              [
+                                                                  80.47892,
+                                                                  26.54548
+                                                              ],
+                                                              [
+                                                                  80.62595,
+                                                                  26.64105
+                                                              ],
+                                                              [
+                                                                  80.77298,
+                                                                  26.73662
+                                                              ],
+                                                              [
+                                                                  80.92,
+                                                                  26.8322
+                                                              ]
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "NDLS",
+                                            "stationName":  "New Delhi"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              77.2197,
+                                                              28.6428
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "GZB",
+                                            "stationName":  "Ghaziabad"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              77.4538,
+                                                              28.6692
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "ALJN",
+                                            "stationName":  "Aligarh Junction"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              78.0812,
+                                                              27.8912
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "TDL",
+                                            "stationName":  "Tundla Junction"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              78.2412,
+                                                              27.2112
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "ETW",
+                                            "stationName":  "Etawah Junction"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              79.0312,
+                                                              26.7712
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "CNB",
+                                            "stationName":  "Kanpur Central"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              80.3319,
+                                                              26.4499
+                                                          ]
+                                      }
+                     },
+                     {
+                         "type":  "Feature",
+                         "properties":  {
+                                            "stationCode":  "LJN",
+                                            "stationName":  "Lucknow Junction"
+                                        },
+                         "geometry":  {
+                                          "type":  "Point",
+                                          "coordinates":  [
+                                                              80.92,
+                                                              26.8322
+                                                          ]
+                                      }
+                     }
+                 ]
+}

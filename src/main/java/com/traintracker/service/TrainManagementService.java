@@ -32,21 +32,14 @@ public class TrainManagementService {
     }
 
     public List<Train> search(String query) {
-        List<Train> results = trainRepo.searchTrains(query);
-        if (results.isEmpty() && query != null && query.trim().matches("\\d{4,5}")) {
-            Train dynamicTrain = fetchAndCreateFromProvider(query.trim());
-            if (dynamicTrain != null) {
-                return List.of(dynamicTrain);
-            }
-        }
-        return results;
+        return trainRepo.searchTrains(query);
     }
 
     @Transactional
     public Train fetchAndCreateFromProvider(String trainNumber) {
         try {
             ProviderTelemetry tel = providerService.fetchLiveStatus(trainNumber);
-            if (tel != null && tel.getLatitude() != null && tel.getLongitude() != null) {
+            if (tel != null) { // Accept provider data even without live coordinates
                 Train train = new Train();
                 train.setTrainNumber(trainNumber);
                 train.setTrainName("Train " + trainNumber);
