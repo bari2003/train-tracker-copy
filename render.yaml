@@ -11,3 +11,5 @@ services:
         value: h2
       - key: PORT
         value: 10000
+      - key: APP_PROVIDER_API_KEY
+        value: rk_live_YQd0da8DhkeVlxFk2dk_-MwsBmvYmMfn
